@@ -1,5 +1,10 @@
 @import '../../shared/styles/variables.css';
 
+.ChatLog,
+.ChatLog .chat-box {
+    height: calc(100vh - 159px);
+}
+
 .ChatLog {
     position: relative;
     background: var(--cc-color-white);
@@ -9,7 +14,6 @@
 }
 
 .ChatLog .chat-box {
-    height: calc(100vh - 157px);
     padding: 15px;
     overflow: auto;
 }
@@ -23,12 +27,13 @@
 }
 
 .ChatLog ul.log li {
-    margin: 0 0 8px;
+    margin: 0;
     font-weight: 400;
 }
 
 .ChatLog ul.log li .meta {
     display: block;
+    margin-top: 10px;
     color: var(--cc-color-text-medium);
     font-size: 85%;
     font-weight: 200;

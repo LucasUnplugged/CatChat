@@ -58,6 +58,21 @@ class ChatLog extends Component {
         return text.join(' ');
     }
 
+    showMessageMeta(message) {
+        // If we have a previous message, check if we
+        // should display this message's meta data.
+        if (this.previousMessage && message.user.name === this.previousMessage.user.name) {
+            const elapsedTime = message.timestamp - this.previousMessage.timestamp;
+            // If the time difference is less than 5 minutes, group them!
+            if (elapsedTime < 300000) {
+                this.previousMessage = message;
+                return false;
+            }
+        }
+        this.previousMessage = message;
+        return true;
+    }
+
     render() {
         const { messages, notifications, users } = this.props;
         const hasMessages = messages && Object.keys(messages).length > 0;
@@ -103,10 +118,12 @@ class ChatLog extends Component {
                                 const message = messages[id];
                                 return (
                                     <li key={id}>
-                                        <span className="meta">
-                                            <span className="user">{message.user.name}</span>
-                                            <span className="time">{this.getTime(message.timestamp)}</span>
-                                        </span>
+                                        {this.showMessageMeta(message) ? (
+                                            <span className="meta">
+                                                <span className="user">{message.user.name}</span>
+                                                <span className="time">{this.getTime(message.timestamp)}</span>
+                                            </span>
+                                        ) : null}
                                         <span
                                             className="text"
                                             dangerouslySetInnerHTML={{ __html: this.getPrettyText(message.text) }}
