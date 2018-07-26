@@ -29,7 +29,7 @@
 
 .ChatLog ul.log li {
     margin: 0;
-    font-weight: 400;
+    font-weight: 300;
 }
 
 .ChatLog ul.log li .meta {
@@ -47,7 +47,8 @@
 .ChatLog ul.log li .user {
     display: inline-block;
     margin-right: 10px;
-    font-weight: 500;
+    color: var(--cc-color-text);
+    font-weight: 900;
 }
 
 .ChatLog ul.log li .at-mention-current,

@@ -18,13 +18,13 @@
 .Notification.off,
 .Notification.exit {
     opacity: 0;
-    transform: translate3d(-110%, 0, 0);
-    transition: opacity 0.75s, transform 1.25s;
+    transform: translate3d(-50%, 0, 0);
+    transition: opacity 0.5s, transform 1s;
 }
 
 .Notification.enter,
 .Notification.done {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    transition: opacity 0.5s, transform 0.25s;
+    transition: opacity 0.375s, transform 0.25s;
 }
