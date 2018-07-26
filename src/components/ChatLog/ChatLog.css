@@ -40,6 +40,10 @@
     font-weight: 200;
 }
 
+.ChatLog ul.log li:first-child .meta {
+    margin-top: 0;
+}
+
 .ChatLog ul.log li .user {
     display: inline-block;
     margin-right: 10px;

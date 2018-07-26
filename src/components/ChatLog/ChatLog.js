@@ -13,6 +13,10 @@ class ChatLog extends Component {
         this.props.getMessages();
     }
 
+    componentWillReceiveProps(newProps) {
+        this.previousMessage = null;
+    }
+
     componentDidUpdate() {
         // Scroll to the bottom of the chat log box
         this.refs.chatBox.scrollTop = this.refs.chatBox.scrollHeight;
@@ -140,9 +144,9 @@ class ChatLog extends Component {
 }
 
 ChatLog.propTypes = {
-    messages: PropTypes.object.isRequired,
+    messages: PropTypes.object,
     notifications: PropTypes.array,
-    users: PropTypes.object.isRequired,
+    users: PropTypes.object,
 };
 
 const mapStateToProps = function(store) {
