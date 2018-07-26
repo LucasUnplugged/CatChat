@@ -26,6 +26,14 @@ class UserForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        this.initializeUserForm();
+    }
+
+    componentDidUpdate() {
+        this.initializeUserForm();
+    }
+
     componentWillReceiveProps(newProps) {
         const { user } = newProps;
         this.setState({
@@ -35,12 +43,25 @@ class UserForm extends Component {
         });
     }
 
-    componentDidMount() {
-        this.focus();
-    }
+    initializeUserForm() {
+        const { user } = this.props;
 
-    componentDidUpdate() {
+        // Activate this form item
         this.focus();
+
+        if (user) {
+            // Remove the user when the window closes
+            window.addEventListener('beforeunload', () => {
+                // Save the user to localStorage
+                localStorage.setItem('ccSavedUser', JSON.stringify(user));
+
+                // Remove the user from the DB
+                this.removeUser();
+            });
+        } else {
+            // Look for a locally saved user
+            this.addSavedUser();
+        }
     }
 
     focus() {
@@ -93,6 +114,17 @@ class UserForm extends Component {
 
         this.setState({ userText: updatedUser.text });
         this.props.userChatInput(updatedUser);
+    }
+
+    addSavedUser() {
+        const { addUser } = this.props;
+
+        // Get the user from local storage
+        let savedUser = localStorage.getItem('ccSavedUser');
+        if (savedUser && savedUser !== 'undefined') {
+            savedUser = JSON.parse(savedUser);
+            addUser(savedUser);
+        }
     }
 
     removeUser() {
