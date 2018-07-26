@@ -37,7 +37,9 @@ class ChatLog extends Component {
     }
 
     getPrettyText(sourceText) {
-        const currentUser = api.users.getCurrentUser();
+        const { currentUser } = this.props;
+        const isCurrentUserSet = currentUser && currentUser.name;
+        const lowerCaseName = isCurrentUserSet ? currentUser.name.toLowerCase() : '';
 
         // Break up text into words
         let text = sourceText.split(' ');
@@ -45,7 +47,7 @@ class ChatLog extends Component {
         // "Prettify" @ mentions
         text = text.map(word => {
             const isAtMention = word.includes('@');
-            const isAtCurrentUser = currentUser && currentUser.name && word.includes(currentUser.name);
+            const isAtCurrentUser = isCurrentUserSet && word.toLowerCase().includes(lowerCaseName);
             const atMentionClass = isAtCurrentUser ? 'at-mention-current' : 'at-mention-other';
             if (isAtMention) {
                 return `<span class="${atMentionClass}">${word}</span>`;
@@ -133,13 +135,13 @@ const mapStateToProps = function(store) {
 
     // If we have a current user, handle @ mentions
     if (currentUser && currentUser.name) {
-        const currentAtMention = `@${currentUser.name}`;
+        const currentAtMention = `@${currentUser.name.toLowerCase()}`;
 
         // Find messages directed at the current user
         for (const id in store.messages.new) {
             if (store.messages.new.hasOwnProperty(id)) {
                 const message = store.messages.new[id];
-                if (message.text.includes(currentAtMention)) {
+                if (message.text.toLowerCase().includes(currentAtMention)) {
                     notifications.push(message);
                 }
             }
@@ -150,6 +152,7 @@ const mapStateToProps = function(store) {
         messages: store.messages.all,
         notifications,
         users: store.users,
+        currentUser,
     };
 };
 

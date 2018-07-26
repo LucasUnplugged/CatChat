@@ -60,12 +60,13 @@ class UserForm extends Component {
 
         const { users, addUser } = this.props;
         const { userName } = this.state;
+        const lowerCaseName = userName.toLowerCase();
 
         // Does name already exist?
         let isNameUnique = true;
         for (let key of Object.keys(users)) {
             let existingUser = users[key];
-            if (existingUser.name.toLowerCase() === userName.toLowerCase()) {
+            if (existingUser.name.toLowerCase() === lowerCaseName) {
                 isNameUnique = false;
                 break;
             }
@@ -81,9 +82,9 @@ class UserForm extends Component {
 
     setUserChatInput(event) {
         const { user } = this.props;
+        const text = event.target.value;
 
-        let text = event.target.value;
-        let updatedUser = update(user, {
+        const updatedUser = update(user, {
             $merge: {
                 text,
                 typing: text && text.length > 0 ? true : false,
