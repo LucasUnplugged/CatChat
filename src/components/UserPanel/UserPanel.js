@@ -17,7 +17,7 @@ class UserPanel extends Component {
         const { users } = this.props;
         const currentUser = api.users.getCurrentUser();
         const hasActiveUsers =
-            users && ((!currentUser && Object.keys(users).length > 0) || Object.keys(users).length > 2);
+            users && ((!currentUser && Object.keys(users).length > 0) || Object.keys(users).length > 1);
 
         return (
             <aside className="UserPanel">

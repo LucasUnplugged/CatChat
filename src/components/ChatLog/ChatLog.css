@@ -3,6 +3,7 @@
 .ChatLog,
 .ChatLog .chat-box {
     height: calc(100vh - 159px);
+    min-height: 200px;
 }
 
 .ChatLog {
@@ -73,6 +74,7 @@
         grid-column: 1 / span 6;
     }
 
+    .ChatLog,
     .ChatLog .chat-box {
         max-height: calc(100vh - 516px);
     }

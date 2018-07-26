@@ -15,10 +15,16 @@ class Notification extends Component {
             isVisible: false,
             animationState: 'off',
         };
+
+        this.animationTimer = null;
     }
 
     componentWillUnmount() {
-        clearTimeout(this.stateTimer);
+        // Cancel pending animations
+        clearTimeout(this.animationTimer);
+
+        // Mark this notification as read
+        this.markAsRead();
     }
 
     componentDidMount() {
@@ -31,28 +37,32 @@ class Notification extends Component {
         switch (animationState) {
             case 'off':
                 // Start
-                this.stateTimer = setTimeout(() => {
+                this.animationTimer = setTimeout(() => {
+                    clearTimeout(this.animationTimer);
                     this.setState({ animationState: 'enter' });
                 });
                 break;
 
             case 'enter':
                 // Fade in
-                this.stateTimer = setTimeout(() => {
+                this.animationTimer = setTimeout(() => {
+                    clearTimeout(this.animationTimer);
                     this.setState({ animationState: 'done' });
                 }, ANIMATION_DELAY);
                 break;
 
             case 'done':
                 // Wait to fade out
-                this.stateTimer = setTimeout(() => {
+                this.animationTimer = setTimeout(() => {
+                    clearTimeout(this.animationTimer);
                     this.setState({ animationState: 'exit' });
                 }, NOTIFICATION_TIMEOUT);
                 break;
 
             case 'exit':
                 // Fade out
-                this.stateTimer = setTimeout(() => {
+                this.animationTimer = setTimeout(() => {
+                    clearTimeout(this.animationTimer);
                     this.setState({ isVisible: false });
 
                     // Mark this notification as read
