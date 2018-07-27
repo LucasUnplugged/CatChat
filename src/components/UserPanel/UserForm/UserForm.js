@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../data/actions';
 import update from 'immutability-helper';
 import * as api from '../../../data/api';
+import InputForm from './InputForm/InputForm';
 import './UserForm.css';
 import '../../../shared/styles/variables.css';
 
@@ -45,9 +46,6 @@ class UserForm extends Component {
     initializeUserForm() {
         const { user, removeUser } = this.props;
 
-        // Activate this form item
-        this.focus();
-
         if (user) {
             // Remove the user when the window closes
             window.addEventListener('beforeunload', () => {
@@ -60,14 +58,6 @@ class UserForm extends Component {
         } else {
             // Look for a locally saved user
             this.addSavedUser();
-        }
-    }
-
-    focus() {
-        if (this.props.user) {
-            this.refs.chatInput.focus();
-        } else {
-            this.refs.nameInput.focus();
         }
     }
 
@@ -157,8 +147,6 @@ class UserForm extends Component {
             user: this.props.user,
             text: this.props.user.text,
         });
-        // Refocus
-        this.refs.chatInput.focus();
     }
 
     render() {
@@ -166,46 +154,27 @@ class UserForm extends Component {
         const { user } = this.props;
 
         return user ? (
-            <form className="UserForm" onSubmit={this.handleSubmit}>
-                <header>
-                    <h1>{userName}</h1>
-                    <a className="control" tabIndex={1} onClick={this.removeUser} onKeyDown={this.removeUser}>
-                        <span className="cc-icon-cancel" />
-                    </a>
-                </header>
-                <fieldset className="button-input">
-                    <input
-                        type="text"
-                        placeholder="Enter chat message"
-                        value={userText}
-                        onChange={this.setUserChatInput}
-                        ref="chatInput"
-                    />
-                    <button type="submit">Send</button>
-                </fieldset>
-            </form>
+            <InputForm
+                onSubmit={this.handleSubmit}
+                onChange={this.setUserChatInput}
+                onClose={this.removeUser}
+                title={userName}
+                placeholder="Enter chat message"
+                text={userText}
+                inputName="chatInput"
+                submitText="Send"
+            />
         ) : (
-            <form className="UserForm" onSubmit={this.handleJoin}>
-                <header>
-                    <h1>Join Chat</h1>
-                </header>
-                <fieldset className="button-input">
-                    <input
-                        type="text"
-                        placeholder="Enter your name"
-                        value={userName}
-                        onChange={this.setUsername}
-                        ref="nameInput"
-                        name="nameInput"
-                    />
-                    <button type="submit">Join</button>
-                    {showDuplicateNameError ? (
-                        <label htmlFor="nameInput" className="error">
-                            Username already in use. Please try another.
-                        </label>
-                    ) : null}
-                </fieldset>
-            </form>
+            <InputForm
+                onSubmit={this.handleJoin}
+                onChange={this.setUsername}
+                title="Join Chat"
+                placeholder="Enter your name"
+                text={userName}
+                inputName="nameInput"
+                submitText="Join"
+                errorMessage={showDuplicateNameError ? 'Username already in use. Please try another.' : null}
+            />
         );
     }
 }
