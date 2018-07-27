@@ -45,21 +45,8 @@ export const addMessage = sourceMessage => async dispatch => {
         });
 };
 
-export const markMessageAsRead = sourceMessage => async => {
-    // Update the message in the database
-    let message = update(sourceMessage, {
-        $merge: {
-            isRead: true,
-        },
-    });
-    let messageObject = {};
-    messageObject[message.id] = message;
-    messages.update(messageObject);
-};
-
 export const getMessages = () => async dispatch => {
     let allMessages;
-    let newMessages;
 
     // Get all messages
     messages.on('value', dataSnapshot => {
@@ -67,21 +54,11 @@ export const getMessages = () => async dispatch => {
         _dispatchMessages();
     });
 
-    // Get new messages
-    messages
-        .orderByChild('isRead')
-        .equalTo(false)
-        .on('value', dataSnapshot => {
-            newMessages = dataSnapshot.val();
-            _dispatchMessages();
-        });
-
     // Dispatch the action with the messages
     const _dispatchMessages = () => {
         dispatch({
             type: 'GET_MESSAGES',
             all: allMessages,
-            new: newMessages,
         });
     };
 };

@@ -12,14 +12,6 @@ const userReducer = (state = {}, action) => {
         return newState;
     }
 
-    // Remove user
-    else if (action.type === 'REMOVE_USER' && action.user && action.user.id) {
-        // Remove user from state
-        newState = update(state, { $unset: [action.user.id] });
-
-        return newState;
-    }
-
     // User chat input
     else if (action.type === 'USER_CHAT_INPUT' && action.user && action.user.id) {
         // Update user
@@ -28,11 +20,6 @@ const userReducer = (state = {}, action) => {
         newState = update(state, { $merge: userObject });
 
         return newState;
-    }
-
-    // Get users
-    if (action.type === 'GET_USERS' && action.users) {
-        return action.users;
     }
 
     return state;

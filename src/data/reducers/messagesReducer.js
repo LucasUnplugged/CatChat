@@ -1,9 +1,8 @@
-const messagesReducer = (state = { all: {}, new: {} }, action) => {
+const messagesReducer = (state = { all: {} }, action) => {
     // Get messages
     if (action.type === 'GET_MESSAGES') {
         return {
             all: action.all,
-            new: action.new,
         };
     }
     return state;

@@ -19,14 +19,6 @@
     overflow: auto;
 }
 
-.ChatLog .notifications {
-    position: absolute;
-    left: 15px;
-    top: 15px;
-    width: calc(100% - 30px);
-    overflow: hidden;
-}
-
 .ChatLog ul.log li {
     margin: 0;
     font-weight: 300;
