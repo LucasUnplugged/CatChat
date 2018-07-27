@@ -9,6 +9,14 @@
     padding: 20px 0;
 }
 
+.Header > * {
+    margin-left: 25px;
+}
+
+.Header > *:first-child {
+    margin-left: 0;
+}
+
 .Header .logo {
     display: inline-block;
     height: var(--cc-header-logo-height);
@@ -30,8 +38,7 @@
     font-weight: 900;
 }
 
-.Header .badge,
-.Header a.control {
+.Header .badge {
     position: relative;
 }
 
@@ -49,18 +56,4 @@
 .Header .badge [class^='cc-icon-']:before,
 .Header .badge [class*=' cc-icon-']:before {
     margin-left: 2px;
-}
-
-.Header a.control {
-    display: block;
-    float: right;
-    top: 13px;
-}
-
-.Header > * {
-    margin-left: 25px;
-}
-
-.Header > *:first-child {
-    margin-left: 0;
 }

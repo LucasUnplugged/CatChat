@@ -9,6 +9,7 @@ const databaseRef = firebase.database().ref();
 // DATA REFERENCES ////////////////////////////////////////
 let usersObject = databaseRef.child('users');
 
+// Extend the "users" reference with currentUser management
 usersObject.currentUser = null;
 usersObject.setCurrentUser = user => {
     this.currentUser = user;
