@@ -50,6 +50,13 @@
 .UserForm header a.control:focus {
     color: var(--cc-color-white);
     background: var(--cc-color-alt);
+    outline: none;
+}
+
+.UserForm input[type='text']:hover + button,
+.UserForm input[type='text']:focus + button {
+    color: var(--cc-color-white);
+    background: var(--cc-color-alt);
 }
 
 .UserForm header [class^='cc-icon-']:before,

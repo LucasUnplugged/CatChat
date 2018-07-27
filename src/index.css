@@ -260,48 +260,6 @@ select[multiple] {
     width: 100%;
 }
 
-input[type='color']:hover,
-input[type='date']:hover,
-input[type='datetime']:hover,
-input[type='datetime-local']:hover,
-input[type='email']:hover,
-input[type='month']:hover,
-input[type='number']:hover,
-input[type='password']:hover,
-input[type='search']:hover,
-input[type='tel']:hover,
-input[type='text']:hover,
-input[type='time']:hover,
-input[type='url']:hover,
-input[type='week']:hover,
-input:not([type]):hover,
-textarea:hover,
-select[multiple]:hover {
-    border-color: var(--cc-color-box-dark);
-}
-
-input[type='color']:focus,
-input[type='date']:focus,
-input[type='datetime']:focus,
-input[type='datetime-local']:focus,
-input[type='email']:focus,
-input[type='month']:focus,
-input[type='number']:focus,
-input[type='password']:focus,
-input[type='search']:focus,
-input[type='tel']:focus,
-input[type='text']:focus,
-input[type='time']:focus,
-input[type='url']:focus,
-input[type='week']:focus,
-input:not([type]):focus,
-textarea:focus,
-select[multiple]:focus {
-    border-color: var(--cc-color-main);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(18, 89, 169, 0.7);
-    outline: none;
-}
-
 input[type='color']:disabled,
 input[type='date']:disabled,
 input[type='datetime']:disabled,
@@ -402,8 +360,9 @@ textarea:hover,
 textarea:focus,
 select[multiple]:hover,
 select[multiple]:focus {
-    border-color: var(--cc-color-main);
-    box-shadow: inset 0 0 0 1px var(--cc-color-main);
+    border-color: var(--cc-color-alt);
+    box-shadow: inset 0 0 0 1px var(--cc-color-alt);
+    outline: none;
 }
 
 button,

@@ -24,7 +24,7 @@ class UserPanel extends Component {
                 <UserForm />
                 <div className="connected-users">
                     <header>
-                        <h1>Connected Users</h1>
+                        <h1>Online</h1>
                     </header>
                     <ul className="user-list">
                         {hasActiveUsers ? (

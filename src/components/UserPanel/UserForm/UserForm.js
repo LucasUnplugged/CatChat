@@ -14,8 +14,8 @@ class UserForm extends Component {
         const { user } = props;
 
         this.state = {
-            userName: user && user.name ? user.name : '',
-            userText: user && user.text ? user.text : '',
+            userName: user ? user.name : '',
+            userText: user ? user.text : '',
             showDuplicateNameError: false,
         };
 
@@ -37,14 +37,14 @@ class UserForm extends Component {
     componentWillReceiveProps(newProps) {
         const { user } = newProps;
         this.setState({
-            userName: user && user.name ? user.name : '',
-            userText: user && user.text ? user.text : '',
+            userName: user ? user.name : '',
+            userText: user ? user.text : '',
             showDuplicateNameError: false,
         });
     }
 
     initializeUserForm() {
-        const { user } = this.props;
+        const { user, removeUser } = this.props;
 
         // Activate this form item
         this.focus();
@@ -56,7 +56,7 @@ class UserForm extends Component {
                 localStorage.setItem('ccSavedUser', JSON.stringify(user));
 
                 // Remove the user from the DB
-                this.removeUser();
+                removeUser(user);
             });
         } else {
             // Look for a locally saved user
@@ -77,11 +77,16 @@ class UserForm extends Component {
     }
 
     handleJoin(event) {
-        event.preventDefault();
-
         const { users, addUser } = this.props;
         const { userName } = this.state;
         const lowerCaseName = userName.toLowerCase();
+
+        event.preventDefault();
+
+        // Ignore this action if the name is empty
+        if (userName.trim().length === 0) {
+            return;
+        }
 
         // Does name already exist?
         let isNameUnique = true;
@@ -124,12 +129,26 @@ class UserForm extends Component {
         if (savedUser && savedUser !== 'undefined') {
             savedUser = JSON.parse(savedUser);
             addUser(savedUser);
+
+            // Once the user is added, remove it from localStorage
+            localStorage.removeItem('ccSavedUser');
         }
     }
 
-    removeUser() {
+    removeUser(event) {
         const { user, removeUser } = this.props;
-        removeUser(user);
+        const isActionKeyDown = event && event.type === 'keydown' && (event.keyCode === 13 || event.keyCode === 32);
+        const isClick = !event || event.type !== 'keydown';
+
+        if (isActionKeyDown || isClick) {
+            event.preventDefault();
+
+            // Remove user from localStorage
+            localStorage.removeItem('ccSavedUser');
+
+            // Remove the user from the DB
+            removeUser(user);
+        }
     }
 
     handleSubmit(event) {
@@ -156,7 +175,7 @@ class UserForm extends Component {
             <form className="UserForm" onSubmit={this.handleSubmit}>
                 <header>
                     <h1>{userName}</h1>
-                    <a className="control" onClick={this.removeUser}>
+                    <a className="control" tabIndex={1} onClick={this.removeUser} onKeyDown={this.removeUser}>
                         <span className="cc-icon-cancel" />
                     </a>
                 </header>
@@ -198,6 +217,7 @@ class UserForm extends Component {
 }
 
 UserForm.propTypes = {
+    users: PropTypes.object,
     user: PropTypes.object,
 };
 

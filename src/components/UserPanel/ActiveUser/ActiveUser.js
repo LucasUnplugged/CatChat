@@ -13,28 +13,32 @@ class ActiveUser extends Component {
         this.atMention = this.atMention.bind(this);
     }
 
-    atMention() {
+    atMention(event) {
         const { atMention, user } = this.props;
+        const isActionKeyDown = event && event.type === 'keydown' && (event.keyCode === 13 || event.keyCode === 32);
+        const isClick = !event || event.type !== 'keydown';
 
-        // @ mention user
-        atMention({
-            user,
-        });
+        if (isActionKeyDown || isClick) {
+            event.preventDefault();
+
+            // @ mention user
+            atMention({
+                user,
+            });
+        }
     }
 
     render() {
         let user = this.props.user;
         return (
-            <li className="ActiveUser">
+            <li className="ActiveUser" tabIndex={0} onClick={this.atMention} onKeyDown={this.atMention}>
                 <header>
                     <div className="status-wrapper">
                         {user.typing ? <Spinner /> : <span className="status-indicator" />}
                     </div>
                     <h1>{user.name}</h1>
                 </header>
-                <a className="at-message button" onClick={this.atMention}>
-                    @
-                </a>
+                <a className="at-message button">@</a>
             </li>
         );
     }
