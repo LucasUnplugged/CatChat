@@ -15,22 +15,12 @@ class UserForm extends Component {
         this.state = {
             userName: user ? user.name : '',
             userText: user ? user.text : '',
-            showDuplicateNameError: false,
         };
 
         this.setUsername = this.setUsername.bind(this);
         this.handleJoin = this.handleJoin.bind(this);
         this.setUserChatInput = this.setUserChatInput.bind(this);
-        this.removeUser = this.removeUser.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        this.initializeUserForm();
-    }
-
-    componentDidUpdate() {
-        this.initializeUserForm();
     }
 
     componentWillReceiveProps(newProps) {
@@ -38,36 +28,16 @@ class UserForm extends Component {
         this.setState({
             userName: user ? user.name : '',
             userText: user ? user.text : '',
-            showDuplicateNameError: false,
         });
     }
 
-    initializeUserForm() {
-        const { user, removeUser } = this.props;
-
-        if (user) {
-            // Remove the user when the window closes
-            window.addEventListener('beforeunload', () => {
-                // Save the user to localStorage
-                localStorage.setItem('ccSavedUser', JSON.stringify(user));
-
-                // Remove the user from the DB
-                removeUser(user);
-            });
-        } else {
-            // Look for a locally saved user
-            this.addSavedUser();
-        }
-    }
-
     setUsername(event) {
-        this.setState({ userName: event.target.value, showDuplicateNameError: false });
+        this.setState({ userName: event.target.value });
     }
 
     handleJoin(event) {
-        const { users, addUser } = this.props;
+        const { addUser } = this.props;
         const { userName } = this.state;
-        const lowerCaseName = userName.toLowerCase();
 
         event.preventDefault();
 
@@ -76,22 +46,8 @@ class UserForm extends Component {
             return;
         }
 
-        // Does name already exist?
-        let isNameUnique = true;
-        for (let key of Object.keys(users)) {
-            let existingUser = users[key];
-            if (existingUser.name.toLowerCase() === lowerCaseName) {
-                isNameUnique = false;
-                break;
-            }
-        }
-
-        if (isNameUnique) {
-            // Add the user
-            addUser({ name: userName });
-        } else {
-            this.setState({ showDuplicateNameError: true });
-        }
+        // Add the user
+        addUser({ name: userName });
     }
 
     setUserChatInput(event) {
@@ -109,36 +65,6 @@ class UserForm extends Component {
         this.props.userChatInput(updatedUser);
     }
 
-    addSavedUser() {
-        const { addUser } = this.props;
-
-        // Get the user from local storage
-        let savedUser = localStorage.getItem('ccSavedUser');
-        if (savedUser && savedUser !== 'undefined') {
-            savedUser = JSON.parse(savedUser);
-            addUser(savedUser);
-
-            // Once the user is added, remove it from localStorage
-            localStorage.removeItem('ccSavedUser');
-        }
-    }
-
-    removeUser(event) {
-        const { user, removeUser } = this.props;
-        const isActionKeyDown = event && event.type === 'keydown' && (event.keyCode === 13 || event.keyCode === 32);
-        const isClick = !event || event.type !== 'keydown';
-
-        if (isActionKeyDown || isClick) {
-            event.preventDefault();
-
-            // Remove user from localStorage
-            localStorage.removeItem('ccSavedUser');
-
-            // Remove the user from the DB
-            removeUser(user);
-        }
-    }
-
     handleSubmit(event) {
         event.preventDefault();
         // Add the message
@@ -149,7 +75,7 @@ class UserForm extends Component {
     }
 
     render() {
-        const { userName, userText, showDuplicateNameError } = this.state;
+        const { userName, userText } = this.state;
         const { user } = this.props;
 
         return user ? (
@@ -172,22 +98,18 @@ class UserForm extends Component {
                 text={userName}
                 inputName="nameInput"
                 submitText="Join"
-                errorMessage={showDuplicateNameError ? 'Username already in use. Please try another.' : null}
             />
         );
     }
 }
 
 UserForm.propTypes = {
-    users: PropTypes.object,
     user: PropTypes.object,
 };
 
-const mapStateToProps = store => {
-    const currentUser = api.users.getCurrentUser();
+const mapStateToProps = () => {
     return {
-        users: store.users,
-        user: currentUser,
+        user: api.users.getCurrentUser(),
     };
 };
 
