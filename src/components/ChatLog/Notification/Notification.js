@@ -5,7 +5,7 @@ import * as actions from '../../../data/actions';
 import './Notification.css';
 
 const NOTIFICATION_TIMEOUT = 3000;
-const ANIMATION_DELAY = 1500;
+const ANIMATION_DELAY = 1000;
 
 class Notification extends Component {
     constructor(props) {
@@ -15,8 +15,6 @@ class Notification extends Component {
             isVisible: false,
             animationState: 'off',
         };
-
-        this.animationTimer = null;
     }
 
     componentWillUnmount() {
@@ -34,44 +32,46 @@ class Notification extends Component {
     componentDidUpdate() {
         const { animationState } = this.state;
 
-        switch (animationState) {
-            case 'off':
-                // Start
-                this.animationTimer = setTimeout(() => {
-                    clearTimeout(this.animationTimer);
-                    this.setState({ animationState: 'enter' });
-                });
-                break;
+        if (!this.animationInProgress) {
+            switch (animationState) {
+                case 'off':
+                    // Start
+                    this.animationTimer = setTimeout(() => {
+                        this.animationInProgress = false;
+                        this.setState({ animationState: 'enter' });
+                    });
+                    break;
 
-            case 'enter':
-                // Fade in
-                this.animationTimer = setTimeout(() => {
-                    clearTimeout(this.animationTimer);
-                    this.setState({ animationState: 'done' });
-                }, ANIMATION_DELAY);
-                break;
+                case 'enter':
+                    // Fade in
+                    this.animationTimer = setTimeout(() => {
+                        this.animationInProgress = false;
+                        this.setState({ animationState: 'done' });
+                    }, ANIMATION_DELAY);
+                    break;
 
-            case 'done':
-                // Wait to fade out
-                this.animationTimer = setTimeout(() => {
-                    clearTimeout(this.animationTimer);
-                    this.setState({ animationState: 'exit' });
-                }, NOTIFICATION_TIMEOUT);
-                break;
+                case 'done':
+                    // Wait to fade out
+                    this.animationTimer = setTimeout(() => {
+                        this.animationInProgress = false;
+                        this.setState({ animationState: 'exit' });
+                    }, NOTIFICATION_TIMEOUT);
+                    break;
 
-            case 'exit':
-                // Fade out
-                this.animationTimer = setTimeout(() => {
-                    clearTimeout(this.animationTimer);
-                    this.setState({ isVisible: false });
+                case 'exit':
+                    // Fade out
+                    this.animationTimer = setTimeout(() => {
+                        this.animationInProgress = false;
+                        this.setState({ isVisible: false });
+                        // Mark this notification as read
+                        this.markAsRead();
+                    }, ANIMATION_DELAY);
+                    break;
 
-                    // Mark this notification as read
-                    this.markAsRead();
-                }, ANIMATION_DELAY);
-                break;
-
-            default:
+                default:
+            }
         }
+        this.animationInProgress = true;
     }
 
     markAsRead() {
@@ -82,7 +82,7 @@ class Notification extends Component {
     render() {
         const { isVisible, animationState } = this.state;
         const { message } = this.props;
-        let animationClass = 'off';
+        let animationClass = '';
 
         switch (animationState) {
             case 'enter':

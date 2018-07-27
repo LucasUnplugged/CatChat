@@ -69,7 +69,6 @@ class ChatLog extends Component {
             const elapsedTime = message.timestamp - this.previousMessage.timestamp;
             // If the time difference is less than 5 minutes, group them!
             if (elapsedTime < 300000) {
-                this.previousMessage = message;
                 return false;
             }
         }
@@ -80,7 +79,6 @@ class ChatLog extends Component {
     render() {
         const { messages, notifications, users } = this.props;
         const hasMessages = messages && Object.keys(messages).length > 0;
-        const hasNotifications = notifications && notifications.length > 0;
         const hasUsers = users && Object.keys(users).length > 0;
 
         // Find which users are typing
@@ -110,10 +108,7 @@ class ChatLog extends Component {
         return (
             <section className="ChatLog">
                 <ul className="notifications">
-                    {hasNotifications &&
-                        notifications.map(notification => (
-                            <Notification key={notification.id} message={notification} />
-                        ))}
+                    {notifications.map(notification => <Notification key={notification.id} message={notification} />)}
                 </ul>
                 <div className="chat-box" ref="chatBox">
                     <ul className="log">

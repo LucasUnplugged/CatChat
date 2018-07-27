@@ -15,8 +15,6 @@ export const addMessage = sourceMessage => async dispatch => {
     };
 
     // Push the new message to the database
-    // NOTE: The database updates in real-time, so we don't
-    // need to dispatch this action!
     messageEntry.set(newMessage);
 
     // Update the user as no longer typing and with blank text
@@ -78,8 +76,8 @@ export const getMessages = () => async dispatch => {
             _dispatchMessages();
         });
 
+    // Dispatch the action with the messages
     const _dispatchMessages = () => {
-        // Dispatch the action with the messages
         dispatch({
             type: 'GET_MESSAGES',
             all: allMessages,

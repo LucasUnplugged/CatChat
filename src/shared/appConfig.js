@@ -4,10 +4,14 @@ import uuid from 'node-uuid';
 let instanceId = localStorage.getItem('ccInstanceId');
 if (instanceId) {
     instanceId = JSON.parse(instanceId);
+    console.log('Re-initiating CatChat instance (' + instanceId + ')');
+} else {
+    instanceId = uuid.v4();
+    console.log('Starting new CatChat instance (' + instanceId + ')');
 }
 
 const appConfig = {
-    id: instanceId ? instanceId : uuid.v4(),
+    id: instanceId,
 };
 
 // Save the instance ID to localStorage
