@@ -1,19 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import * as actions from '../../data/actions';
 import { getTime, isSameDay, format } from 'date-fns';
 import './ChatLog.css';
 
 class ChatLog extends Component {
-    componentWillMount() {
-        this.props.getMessages();
-    }
+    componentWillMount() {}
 
-    componentDidUpdate() {
-        // Scroll to the bottom of the chat log box
-        this.refs.chatBox.scrollTop = this.refs.chatBox.scrollHeight;
-    }
+    componentDidUpdate() {}
 
     getTime(timestamp) {
         if (!timestamp) {
@@ -33,61 +24,7 @@ class ChatLog extends Component {
         return timeText;
     }
 
-    showMessageMeta(message) {
-        // If we have a previous message, check if we
-        // should display this message's meta data.
-        if (this.previousMessage && message.user.name === this.previousMessage.user.name) {
-            const elapsedTime = message.timestamp - this.previousMessage.timestamp;
-            // If the time difference is less than 5 minutes, group them!
-            if (elapsedTime < 300000) {
-                return false;
-            }
-        }
-        this.previousMessage = message;
-        return true;
-    }
-
     render() {
-        const { messages } = this.props;
-        const hasMessages = messages && Object.keys(messages).length > 0;
-
-        return (
-            <section className="ChatLog">
-                <div className="chat-box" ref="chatBox">
-                    <ul className="log">
-                        {hasMessages &&
-                            Object.keys(messages).map(id => {
-                                const message = messages[id];
-                                return (
-                                    <li key={id}>
-                                        {this.showMessageMeta(message) ? (
-                                            <span className="meta">
-                                                <span className="user">{message.user.name}</span>
-                                                <span className="time">{this.getTime(message.timestamp)}</span>
-                                            </span>
-                                        ) : null}
-                                        <span className="text">{message.text}</span>
-                                    </li>
-                                );
-                            })}
-                    </ul>
-                </div>
-            </section>
-        );
+        return;
     }
 }
-
-ChatLog.propTypes = {
-    messages: PropTypes.object,
-};
-
-const mapStateToProps = store => {
-    return {
-        messages: store.messages.all,
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    actions,
-)(ChatLog);
