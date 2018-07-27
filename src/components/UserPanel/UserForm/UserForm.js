@@ -5,7 +5,6 @@ import * as actions from '../../../data/actions';
 import update from 'immutability-helper';
 import * as api from '../../../data/api';
 import InputForm from './InputForm/InputForm';
-import './UserForm.css';
 import '../../../shared/styles/variables.css';
 
 class UserForm extends Component {
