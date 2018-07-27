@@ -144,7 +144,7 @@ ChatLog.propTypes = {
     users: PropTypes.object,
 };
 
-const mapStateToProps = function(store) {
+const mapStateToProps = store => {
     // Get list of notifications specific to the current user
     const currentUser = api.users.getCurrentUser();
     let notifications = [];

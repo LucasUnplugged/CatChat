@@ -23,7 +23,7 @@ App.propTypes = {
     users: PropTypes.object,
 };
 
-const mapStateToProps = function(store) {
+const mapStateToProps = store => {
     return {
         users: store.users,
     };

@@ -1,4 +1,4 @@
-const messagesReducer = function(state = { all: {}, new: {} }, action) {
+const messagesReducer = (state = { all: {}, new: {} }, action) => {
     // Get messages
     if (action.type === 'GET_MESSAGES') {
         return {

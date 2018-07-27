@@ -49,7 +49,7 @@ ActiveUser.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = function(store, props) {
+const mapStateToProps = (store, props) => {
     return {
         user: store.users[props.id],
     };

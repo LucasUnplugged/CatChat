@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import store from '../../../data/store';
 import * as actions from '../../../data/actions';
 import update from 'immutability-helper';
 import * as api from '../../../data/api';
@@ -158,11 +157,6 @@ class UserForm extends Component {
             user: this.props.user,
             text: this.props.user.text,
         });
-        // Reset user's chat input
-        store.dispatch({
-            type: 'USER_CHAT_INPUT',
-            user: { id: this.props.user.id, text: '', typing: false },
-        });
         // Refocus
         this.refs.chatInput.focus();
     }
@@ -221,7 +215,7 @@ UserForm.propTypes = {
     user: PropTypes.object,
 };
 
-const mapStateToProps = function(store) {
+const mapStateToProps = store => {
     const currentUser = api.users.getCurrentUser();
     return {
         users: store.users,
