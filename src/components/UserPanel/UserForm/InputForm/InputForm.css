@@ -31,8 +31,8 @@
     margin: 0;
 }
 
-.UserForm input[type='text']:hover + button,
-.UserForm input[type='text']:focus + button {
+.InputForm input[type='text']:hover + button,
+.InputForm input[type='text']:focus + button {
     color: var(--cc-color-white);
     background: var(--cc-color-alt);
 }
