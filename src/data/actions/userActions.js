@@ -2,26 +2,60 @@ import appConfig from '../../shared/appConfig';
 import { users } from '../api';
 
 export const addUser = sourceUser => async dispatch => {
-    // Prepare new user
-    let userEntry = users.push();
-    let newUser = {
-        id: userEntry.key,
-        name: sourceUser.name,
-        window: appConfig.id,
-        typing: false,
-        text: '',
+    const addUserAction = () => {
+        // Prepare new user
+        let userEntry = users.push();
+        let newUser = {
+            id: userEntry.key,
+            name: sourceUser.name,
+            window: appConfig.id,
+            typing: false,
+            text: '',
+        };
+
+        // Push the new user to the database
+        userEntry.set(newUser);
+
+        // Save as the current user
+        users.setCurrentUser(newUser);
+
+        // Dispatch the user action
+        dispatch({
+            type: 'ADD_USER',
+            user: newUser,
+        });
     };
 
-    // Push the new user to the database
-    userEntry.set(newUser);
+    // Only execute the action if the user doesn't already exist
+    if (sourceUser.id) {
+        users
+            .orderByChild('name')
+            .equalTo(sourceUser.name)
+            .once('value')
+            .then(dataSnapshot => {
+                if (!dataSnapshot.exists()) {
+                    addUserAction();
+                } else {
+                }
+            });
+    } else {
+        addUserAction();
+    }
+};
 
-    // Save as the current user
-    users.setCurrentUser(newUser);
+export const removeUser = sourceUser => async dispatch => {
+    if (!sourceUser || !sourceUser.id) {
+        return;
+    }
+    users.child(sourceUser.id).remove();
+
+    // Reset the current user
+    users.setCurrentUser(null);
 
     // Dispatch the user action
     dispatch({
-        type: 'ADD_USER',
-        user: newUser,
+        type: 'REMOVE_USER',
+        user: sourceUser,
     });
 };
 

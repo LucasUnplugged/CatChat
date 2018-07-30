@@ -37,3 +37,23 @@
 .Header .wordmark strong {
     font-weight: 900;
 }
+
+.Header .badge {
+    position: relative;
+}
+
+.Header .badge {
+    display: inline-block;
+    top: -7px;
+    padding: 4px 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--cc-color-text);
+    background: var(--cc-color-box);
+    border-radius: 80px;
+}
+
+.Header .badge [class^='cc-icon-']:before,
+.Header .badge [class*=' cc-icon-']:before {
+    margin-left: 2px;
+}

@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../data/actions';
 import { getTime, isSameDay, format } from 'date-fns';
+import * as api from '../../data/api';
 import './ChatLog.css';
 
 class ChatLog extends Component {
     componentWillMount() {
         this.props.getMessages();
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.previousMessage = null;
     }
 
     componentDidUpdate() {
@@ -48,8 +53,33 @@ class ChatLog extends Component {
     }
 
     render() {
-        const { messages } = this.props;
+        const { messages, users } = this.props;
         const hasMessages = messages && Object.keys(messages).length > 0;
+        const hasUsers = users && Object.keys(users).length > 0;
+
+        // Find which users are typing
+        let typingUsers = [];
+        if (hasUsers) {
+            for (const key in users) {
+                if (users.hasOwnProperty(key)) {
+                    const user = users[key];
+                    if (user.typing) {
+                        typingUsers.push(user);
+                    }
+                }
+            }
+        }
+
+        // Describe which users are typing
+        let typingUsersText = typingUsers.length > 0 ? typingUsers.map(user => user.name).join(', ') : null;
+        if (typingUsers.length === 1) {
+            typingUsersText += ' is typing...';
+        } else if (typingUsers.length > 3) {
+            typingUsersText = `${typingUsers.length} users are typing...`;
+        } else if (typingUsers.length > 1) {
+            typingUsersText = typingUsersText.replace(/, ([^, ]*)$/, ' and $1');
+            typingUsersText += ' are typing...';
+        }
 
         return (
             <section className="ChatLog">
@@ -71,6 +101,7 @@ class ChatLog extends Component {
                                 );
                             })}
                     </ul>
+                    {typingUsersText && <p className="typing-indicator">{typingUsersText}</p>}
                 </div>
             </section>
         );
@@ -79,11 +110,13 @@ class ChatLog extends Component {
 
 ChatLog.propTypes = {
     messages: PropTypes.object,
+    users: PropTypes.object,
 };
 
 const mapStateToProps = store => {
     return {
         messages: store.messages.all,
+        users: store.users,
     };
 };
 
