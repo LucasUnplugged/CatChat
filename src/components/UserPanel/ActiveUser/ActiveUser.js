@@ -31,7 +31,13 @@ class ActiveUser extends Component {
     render() {
         let user = this.props.user;
         return (
-            <li className="ActiveUser" tabIndex={0} onClick={this.atMention} onKeyDown={this.atMention}>
+            <li
+              className="ActiveUser"
+              tabIndex={0}
+              onClick={this.atMention}
+              onKeyDown={this.atMention}
+              title={`Send ${user.name} a message`}
+            >
                 <header>
                     <div className="status-wrapper">
                         {user.typing ? <Spinner /> : <span className="status-indicator" />}

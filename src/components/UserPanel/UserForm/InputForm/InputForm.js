@@ -30,7 +30,7 @@ class InputForm extends Component {
                     <h1>{title}</h1>
                     {onClose ? (
                         <a className="control" tabIndex={1} onClick={onClose} onKeyDown={onClose}>
-                            <span className="cc-icon-cancel" />
+                            <span className="fas fa-times" />
                         </a>
                     ) : null}
                 </header>

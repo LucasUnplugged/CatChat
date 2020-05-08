@@ -9,6 +9,7 @@
     position: relative;
     margin-top: 10px;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .ActiveUser:hover,

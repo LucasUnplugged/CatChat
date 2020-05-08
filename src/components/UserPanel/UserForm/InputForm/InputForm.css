@@ -32,6 +32,8 @@
 }
 
 .InputForm header a.control {
+    align-items: center;
+    display: flex;
     position: absolute;
     top: 0;
     right: 0;

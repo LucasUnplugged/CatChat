@@ -17,7 +17,7 @@ class Header extends Component {
                 {userCount > 0 && (
                     <span className="badge">
                         {userCount}&nbsp;
-                        <span className="cc-icon-user" />
+                        <span className={`fas ${userCount > 1 ? 'fa-users' : 'fa-user'}`} />
                     </span>
                 )}
             </header>

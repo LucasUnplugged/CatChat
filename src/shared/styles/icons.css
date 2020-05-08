@@ -26,17 +26,23 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+[class^='fa-']:before,
+[class*=' fa-']:before,
+[class^='cc-icon-']:before,
+[class*=' cc-icon-']:before {
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 [class^='cc-icon-']:before,
 [class*=' cc-icon-']:before {
     font-family: 'reactchat' !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
-    text-transform: none !important;
-    speak: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .cc-icon-user:before {
