@@ -154,6 +154,7 @@ class UserForm extends Component {
 
         return user ? (
             <InputForm
+                closeTitle='Reset user name'
                 onSubmit={this.handleSubmit}
                 onChange={this.setUserChatInput}
                 onClose={this.removeUser}

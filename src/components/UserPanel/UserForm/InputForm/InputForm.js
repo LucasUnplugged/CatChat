@@ -13,6 +13,7 @@ class InputForm extends Component {
 
     render() {
         const {
+            closeTitle,
             onSubmit,
             onChange,
             onClose,
@@ -29,7 +30,7 @@ class InputForm extends Component {
                 <header>
                     <h1>{title}</h1>
                     {onClose ? (
-                        <a className="control" tabIndex={1} onClick={onClose} onKeyDown={onClose}>
+                        <a className="control" tabIndex={1} onClick={onClose} onKeyDown={onClose} title={closeTitle}>
                             <span className="fas fa-times" />
                         </a>
                     ) : null}
@@ -57,6 +58,7 @@ class InputForm extends Component {
 }
 
 InputForm.propTypes = {
+    closeTitle: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     onClose: PropTypes.func,

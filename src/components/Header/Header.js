@@ -15,7 +15,7 @@ class Header extends Component {
                     Cat<strong>Chat</strong>
                 </h1>
                 {userCount > 0 && (
-                    <span className="badge">
+                    <span className="badge" title={`${userCount} user${userCount > 1 ? 's' : ''} online`}>
                         {userCount}&nbsp;
                         <span className={`fas ${userCount > 1 ? 'fa-users' : 'fa-user'}`} />
                     </span>

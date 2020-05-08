@@ -12,10 +12,10 @@ let usersObject = databaseRef.child('users');
 // Extend the "users" reference with currentUser management
 usersObject.currentUser = null;
 usersObject.setCurrentUser = user => {
-    this.currentUser = user;
+  usersObject.currentUser = user;
 };
 usersObject.getCurrentUser = () => {
-    return this.currentUser;
+    return usersObject.currentUser;
 };
 
 export const users = usersObject;
